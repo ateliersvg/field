@@ -1,0 +1,72 @@
+{
+    "name": "atelier/field",
+    "description": "Procedural SVG drawings for PHP within a specified area: waves, dunes, mountains, contours, flow, halftone",
+    "license": "MIT",
+    "type": "library",
+    "homepage": "https://ateliersvg.com/field/",
+    "keywords": [
+        "svg",
+        "field",
+        "procedural",
+        "generative",
+        "landscape",
+        "waves",
+        "contour",
+        "halftone",
+        "noise",
+        "background",
+        "php-svg",
+        "atelier-svg"
+    ],
+    "support": {
+        "issues": "https://github.com/ateliersvg/field/issues",
+        "source": "https://github.com/ateliersvg/field"
+    },
+    "authors": [
+        {
+            "name": "Simon André",
+            "email": "smn.andre@gmail.com",
+            "homepage": "https://smnandre.dev"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.3",
+        "ext-random": "*",
+        "atelier/svg": "^1.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.94",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Atelier\\Field\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atelier\\Field\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "coverage": [
+            "@php -r \"@unlink('.phpunit.cache/coverage.xml');\"",
+            "@php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=.phpunit.cache/coverage.xml"
+        ],
+        "cs": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "vendor/bin/php-cs-fixer fix",
+        "gallery": "php examples/gallery.php",
+        "qa": [
+            "@cs",
+            "@sa",
+            "@test"
+        ],
+        "sa": "vendor/bin/phpstan analyse --memory-limit=-1",
+        "test": "vendor/bin/phpunit"
+    }
+}

@@ -16,8 +16,10 @@ transparent space between their shapes.
 ```php
 use Atelier\Field\Field;
 
-echo Field::waves(1200, 400, layers: 6, seed: 7)->withColor('#cf4d9b')->toSvg();
+echo Field::waves(360, 240, layers: 5, seed: 1)->withColor('#cf4d9b')->toSvg();
 ```
+
+Examples from the catalogue: waves and low poly.
 
 <p align="center">
   <img src="docs/images/waves.svg" width="240" alt="Layered wave bands generated for one viewport">
@@ -41,6 +43,8 @@ Composer installs the package dependencies.
 
 ## Quick start
 
+Save a drawing as `waves.svg`:
+
 ```php
 <?php
 
@@ -50,24 +54,22 @@ use Atelier\Field\Field;
 
 require __DIR__.'/vendor/autoload.php';
 
-echo Field::waves(1200, 400, layers: 6, seed: 7)
-    ->withColor('#0067a0')
-    ->toSvg();
+$field = Field::waves(360, 240, layers: 5, seed: 1)->withColor('#cf4d9b');
+
+file_put_contents(__DIR__.'/waves.svg', $field->toSvg());
 ```
 
-The following snippets reuse the imports and autoloader above. To append the drawing to an
-existing document:
+Open `waves.svg` in a browser. The following snippets reuse `$field`, the imports, and the
+autoloader above. To append the drawing to an existing Atelier SVG document:
 
 ```php
-$document->getRootElement()?->appendChild(
-    Field::waves(1200, 400)->element()
-);
+$document->getRootElement()?->appendChild($field->element());
 ```
 
-Or take it as a CSS background:
+Get CSS that uses the drawing as a background:
 
 ```php
-echo Field::waves(1600, 500)->withColor('#0067a0')->toCss();
+echo $field->toCss();
 ```
 
 A background image is a document of its own, so `currentColor` resolves to black there. Set a
@@ -75,30 +77,29 @@ real colour before calling `toDataUri()` or `toCss()`.
 
 ## Colour
 
-Factories take geometry and, for seeded generators, a seed. Colour applies afterwards and
-returns a new field each time.
+Style methods return a new field, leaving the original unchanged:
 
 ```php
-Field::waves(1200, 400)
-    ->withColor('#0067a0')
+echo $field->withColor('#0067a0')
     ->withBackground('#f6f5f1')
-    ->withOpacity(0.6);
+    ->withOpacity(0.6)
+    ->toSvg();
 ```
 
-The default foreground is `currentColor` and no ground is painted, so one drawing follows the
-colour of its ancestors when used as inline SVG.
+The default foreground is `currentColor` and the background is transparent. Inline SVG
+inherits its colour from the surrounding page.
 
 For a coordinated foreground, background, and palette, use a theme:
 
 ```php
 use Atelier\Field\Theme;
 
-Field::waves(1200, 400)->withTheme(Theme::blueprint());
+echo $field->withTheme(Theme::blueprint())->toSvg();
 ```
 
-A nonempty palette takes precedence over the foreground for toned fills. `withColor()` changes
-only the foreground; it does not replace palette entries. Without a palette, layers use one
-colour at different opacities. See [Colour](docs/getting-started.md#colour-it).
+When a theme defines a palette, layers use those colours instead of the foreground colour.
+`withColor()` does not replace palette entries. Without a palette, layers use one colour at
+different opacities. See [Colour](docs/getting-started.md#colour-it).
 
 ## Catalogue
 
@@ -144,7 +145,7 @@ colour at different opacities. See [Colour](docs/getting-started.md#colour-it).
       <a href="docs/fields/voronoi.md"><img src="docs/images/voronoi.svg" width="180" alt="The cells of a Voronoi partition"><br>Voronoi</a>
     </td>
     <td align="center" width="33%">
-      <a href="docs/fields/foam.md"><img src="docs/images/foam.svg" width="180" alt="Discs packed with a bounded attempt budget"><br>Foam</a>
+      <a href="docs/fields/foam.md"><img src="docs/images/foam.svg" width="180" alt="Packed circles of different sizes"><br>Foam</a>
     </td>
   </tr>
   <tr>
@@ -182,6 +183,8 @@ See [Input limits](docs/getting-started.md#input-limits) for validation examples
 using extreme dimensions or sampling settings.
 
 ## Gallery
+
+From a repository checkout with dependencies installed:
 
 ```bash
 composer gallery
